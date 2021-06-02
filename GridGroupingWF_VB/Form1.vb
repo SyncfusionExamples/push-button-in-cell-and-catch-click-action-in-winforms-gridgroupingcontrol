@@ -9,23 +9,24 @@ Imports System.Windows.Forms
 Namespace DataGrid
 	Partial Public Class Form1
 		Inherits Form
-		#region "Create DataTable"
+		#region "Constructor"
 		Public Sub New()
 			InitializeComponent()
-
+			AddHandler Me.FormClosed, AddressOf Form1_FormClosed
 			Me.gridGroupingControl1.DataSource = CreateTable()
 			GridSettings()
 		End Sub
+
 		#End Region
 
 		#region "GridSettings"
 		Private Sub GridSettings()
-            'To set PushButton.
-            Me.gridGroupingControl1.TableDescriptor.Columns(2).Appearance.AddNewRecordFieldCell.CellType = GridCellTypeName.PushButton
-            Me.gridGroupingControl1.TableDescriptor.Columns(2).Appearance.AddNewRecordFieldCell.Description = "PushButton"
-            'Event subscription
-            AddHandler gridGroupingControl1.TableControlPushButtonClick, AddressOf gridGroupingControl1_TableControlPushButtonClick
-        End Sub
+			'To set PushButton.
+			Me.gridGroupingControl1.TableDescriptor.Columns(2).Appearance.AddNewRecordFieldCell.CellType = GridCellTypeName.PushButton
+			Me.gridGroupingControl1.TableDescriptor.Columns(2).Appearance.AddNewRecordFieldCell.Description = "PushButton"
+			'Event subscription
+			AddHandler gridGroupingControl1.TableControlPushButtonClick, AddressOf gridGroupingControl1_TableControlPushButtonClick
+		End Sub
 		#End Region
 
 		#Region "Event Hanlders"
@@ -33,6 +34,11 @@ Namespace DataGrid
 		Private Sub gridGroupingControl1_TableControlPushButtonClick(ByVal sender As Object, ByVal e As GridTableControlCellPushButtonClickEventArgs)
 			Dim s As String = String.Format("You clicked ({0},{1}).", e.Inner.RowIndex, e.Inner.ColIndex)
 			MessageBox.Show(s)
+		End Sub
+
+		Private Sub Form1_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs)
+			'Event unwire
+			RemoveHandler gridGroupingControl1.TableControlPushButtonClick, AddressOf gridGroupingControl1_TableControlPushButtonClick
 		End Sub
 		#End Region
 

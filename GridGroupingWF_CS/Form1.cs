@@ -9,14 +9,15 @@ namespace DataGrid
 {
     public partial class Form1 : Form
     {
-        #region "Create DataTable"
+        #region "Constructor"
         public Form1()
         {
             InitializeComponent();
-
+            this.FormClosed += Form1_FormClosed;
             this.gridGroupingControl1.DataSource = CreateTable();
             GridSettings();
         }
+       
         #endregion
 
         #region "GridSettings"
@@ -36,6 +37,12 @@ namespace DataGrid
         {
             string s = string.Format("You clicked ({0},{1}).", e.Inner.RowIndex, e.Inner.ColIndex);
             MessageBox.Show(s);
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //Event unwire
+            this.gridGroupingControl1.TableControlPushButtonClick -= new GridTableControlCellPushButtonClickEventHandler(gridGroupingControl1_TableControlPushButtonClick);
         }
         #endregion
 
